@@ -11,7 +11,7 @@
     *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif;line-height:1.6}
     a{color:inherit;text-decoration:none}.wrap{width:min(1120px,92%);margin:auto}
     .top{border-bottom:1px solid #24211c;background:#080808}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-    .brand{font-weight:900;letter-spacing:2px;font-size:20px}.brand span{color:var(--gold)}.navlinks{display:flex;gap:25px;color:#d4cec4;font-size:13px}
+    .brand{display:flex;align-items:center;gap:12px}.brand-logo{width:42px;height:54px;object-fit:contain;display:block}.brand-wordmark{font-weight:900;letter-spacing:2px;font-size:20px}.brand-wordmark span{color:var(--gold)}.about-art{background:#050505}.about-art img{display:block;width:min(100%,300px);max-height:330px;object-fit:contain;margin:auto}.navlinks{display:flex;gap:25px;color:#d4cec4;font-size:13px}
     .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border:1px solid var(--gold);font-weight:800;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:.2s}
     .btn.gold{background:var(--gold);color:#111}.btn:hover{transform:translateY(-2px);background:var(--gold2);color:#111}
     .hero{min-height:610px;display:flex;align-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 78% 42%,#3c2b17 0%,#17120c 25%,#090909 62%)}
@@ -55,7 +55,7 @@
 <body>
 <header class="top">
   <div class="wrap nav">
-    <a class="brand" href="#home">ELECTRON <span>TATTOOS</span></a>
+    <a class="brand" href="#home" aria-label="Electron Tattoos home"><img class="brand-logo" src="electron-logo.svg" alt="Electron Tattoos skull and lightning logo"><span class="brand-wordmark">ELECTRON <span>TATTOOS</span></span></a>
     <nav class="navlinks"><a href="#services">SERVICES</a><a href="#gallery">GALLERY</a><a href="#about">ABOUT</a><a href="#contact">CONTACT</a></nav>
     <a class="btn" href="#contact">Book Consultation</a>
   </div>
@@ -102,7 +102,7 @@
 
   <section id="about">
     <div class="wrap about-grid">
-      <div class="about-art"><div><div class="monogram">ET</div><small>ELECTRON TATTOOS · GANDHIDHAM</small></div></div>
+      <div class="about-art"><img src="electron-logo.svg" alt="Electron Tattoos original skull and lightning logo"></div>
       <div class="about-copy"><div class="eyebrow">About the studio</div><h2>Your idea.<br>Our craft.</h2><p>Electron Tattoos is a tattoo studio in Gandhi Market, Gandhidham, Gujarat, focused on custom permanent tattoos and personalised consultations.</p><p>We prioritise careful design planning, a clean working environment and clear communication before every session.</p><a class="btn" href="https://www.instagram.com/electrontattoos/" target="_blank" rel="noopener">View Instagram</a></div>
     </div>
   </section>
