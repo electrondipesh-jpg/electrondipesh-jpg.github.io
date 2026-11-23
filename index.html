@@ -48,6 +48,8 @@
     .sticky{display:none}
     @media(max-width:760px){.navlinks{display:none}.nav{height:66px}.hero{min-height:570px}.hero-inner{padding:70px 0}.services{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr 1fr}.gallery-tile{min-height:170px}.about-grid,.contact-grid{grid-template-columns:1fr;gap:25px}.about-art{min-height:240px;padding:10px}.about-art img{width:min(75%,230px);max-height:260px}section{padding:65px 0}.sticky{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:10;background:#090909;padding:9px;gap:8px;border-top:1px solid var(--line)}.sticky a{flex:1;padding:12px 8px;font-size:10px}.sticky-space{height:60px}}
     @media(max-width:390px){.gallery-grid{grid-template-columns:1fr}.trust{gap:12px}}
+
+    .lead-form{display:grid;gap:12px;margin-top:22px}.lead-form label{display:grid;gap:5px;font-size:12px;color:#e6d6bd}.lead-form input,.lead-form select,.lead-form textarea{width:100%;border:1px solid #54452f;background:#181613;color:#fff;padding:12px;font:inherit;border-radius:2px}.lead-form textarea{min-height:85px;resize:vertical}.lead-form .btn{cursor:pointer}.lead-form .btn:disabled{opacity:.6;cursor:wait}.form-note{font-size:12px;color:#b9afa1}.form-status{font-size:13px;min-height:22px;color:#f1d69b}.hp-field{position:absolute;left:-9999px;opacity:0}
   </style>
 </head>
 <body>
@@ -107,6 +109,18 @@
       <div><div class="eyebrow">Start your tattoo journey</div><h2>Let's create<br>something meaningful.</h2><p style="color:#aaa39a">Call or message to arrange a personal consultation. Design and pricing are discussed directly with the studio.</p>
         <div class="actions"><a class="btn gold" href="tel:+917778833638" data-track="phone">Call 77788 33638</a><a class="btn" href="https://wa.me/917778833638" target="_blank" rel="noopener" data-track="whatsapp">WhatsApp</a></div>
       </div>
+
+        <form class="lead-form" id="consultation-form" novalidate>
+          <h3 style="font:500 27px Georgia,serif;margin:4px 0">Request a consultation</h3>
+          <label>Your name <input name="name" autocomplete="name" maxlength="100" required placeholder="Full name"></label>
+          <label>Mobile number <input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="16" required placeholder="10-digit mobile number"></label>
+          <label>Tattoo requirement <select name="tattooType" required><option value="">Select a service</option><option>New custom tattoo</option><option>Name / lettering tattoo</option><option>Cover-up / rework</option><option>Touch-up</option><option>Tattoo removal consultation</option><option>Other</option></select></label>
+          <label>Tell us briefly <textarea name="message" maxlength="1000" placeholder="Style, placement, preferred appointment day (optional)"></textarea></label>
+          <div class="hp-field" aria-hidden="true"><label>Leave blank <input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <button class="btn gold" type="submit" id="lead-submit">Send consultation request</button>
+          <div class="form-status" id="lead-status" role="status" aria-live="polite"></div>
+          <div class="form-note">By submitting, you agree to be contacted by Electron Tattoos about your enquiry. No payment is required. Please call if your request is urgent.</div>
+        </form>
       <div class="contact-card">
         <div class="detail"><small>Studio</small><strong>Electron Tattoos</strong></div>
         <div class="detail"><small>Location</small><strong>Gandhi Market, Gandhidham, Gujarat 370201, India</strong></div>
@@ -135,6 +149,31 @@
       }
     });
   });
+
+  (function(){
+    const form=document.getElementById('consultation-form');
+    const status=document.getElementById('lead-status');
+    const button=document.getElementById('lead-submit');
+    const endpoint='https://script.google.com/macros/s/AKfycbwNG-Y6hnh6Ayo9npvx40ktmseoPaJv8kdMEL9sd335b7lcfWImvTeBECNWNoYKbOIN/exec';
+    form.addEventListener('submit',async function(e){
+      e.preventDefault();
+      if(form.elements.website.value)return;
+      const phone=form.elements.phone.value.replace(/[^0-9]/g,'');
+      if(!form.elements.name.value.trim() || !/^(?:91)?[6-9][0-9]{9}$/.test(phone) || !form.elements.tattooType.value){
+        status.textContent='Please enter your name, valid Indian mobile number and tattoo requirement.';return;
+      }
+      button.disabled=true;status.textContent='Sending your request…';
+      const payload={name:form.elements.name.value.trim(),phone:phone,tattooType:form.elements.tattooType.value,message:form.elements.message.value.trim()};
+      try{
+        await fetch(endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+        status.textContent='Request sent from your browser. Please note: delivery cannot be confirmed here. If you do not hear back, call +91 77788 33638.';
+        form.reset();
+        if(typeof window.gtag==='function')window.gtag('event','lead_form_submit_attempt',{event_category:'engagement'});
+      }catch(err){
+        status.textContent='Could not send the request. Please call +91 77788 33638 instead.';
+      }finally{button.disabled=false;}
+    });
+  })();
 </script>
 </body>
 </html>
