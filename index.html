@@ -9,9 +9,6 @@
     gtag('js', new Date());
     gtag('config', 'G-EZQGD5BJB2');
     gtag('config', 'AW-474934191');
-    gtag('config', 'AW-474934191/jttZCKufprsdEK_Xu-IB', {
-      'phone_conversion_number': '7778833638'
-    });
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -126,7 +123,7 @@
         <div class="detail"><small>Location</small><strong>Gandhi Market, Gandhidham, Gujarat 370201, India</strong></div>
         <div class="detail"><small>Phone / WhatsApp</small><strong>+91 77788 33638</strong></div>
         <div class="detail"><small>Instagram</small><strong><a href="https://www.instagram.com/electrontattoos/" target="_blank" rel="noopener">@electrontattoos ↗</a></strong></div>
-        <div class="detail"><small>Directions</small><strong><a href="https://www.google.com/maps/search/?api=1&query=Electron+Tattoos+Gandhi+Market+Gandhidham" target="_blank" rel="noopener">Find us on Google Maps ↗</a></strong></div>
+        <div class="detail"><small>Directions</small><strong><a href="https://www.google.com/maps/search/?api=1&query=Electron+Tattoos+Gandhi+Market+Gandhidham" target="_blank" rel="noopener" data-track="directions">Find us on Google Maps ↗</a></strong></div>
       </div>
     </div>
   </section>
@@ -137,18 +134,53 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Analytics events are queued now and will send once the Google tag is installed.
+  // Separate Google Ads destinations prevent snippet function name collisions.
+  const adsConversions = {
+    phone: 'AW-474934191/mu36CNLfxb4dEK_Xu-IB',
+    whatsapp: 'AW-474934191/HgomCNXfxb4dEK_Xu-IB',
+    lead: 'AW-474934191/ovEOCNjfxb4dEK_Xu-IB',
+    directions: 'AW-474934191/5RlYCNvfxb4dEK_Xu-IB'
+  };
+  function trackAdsConversion(kind) {
+    if (typeof window.gtag === 'function' && adsConversions[kind]) {
+      try { window.gtag('event', 'conversion', {send_to: adsConversions[kind]}); }
+      catch (err) { console.warn('Conversion tag unavailable'); }
+    }
+  }
   document.querySelectorAll('[data-track]').forEach(function(link){
     link.addEventListener('click', function(){
-      var kind = link.getAttribute('data-track');
+      const kind = link.getAttribute('data-track');
+      trackAdsConversion(kind);
       if (typeof window.gtag === 'function') {
-        window.gtag('event', kind === 'phone' ? 'phone_click' : 'whatsapp_click', {
-          event_category: 'engagement',
-          event_label: link.href
+        window.gtag('event', kind === 'phone' ? 'phone_click' : kind === 'whatsapp' ? 'whatsapp_click' : 'directions_click', {
+          send_to: 'G-EZQGD5BJB2', event_category: 'engagement', event_label: link.href
         });
       }
     });
   });
+
+  // An opaque POST response is not proof of a saved lead. Ask Apps Script for
+  // a random, short-lived receipt containing no personal information.
+  function checkLeadReceipt(endpoint, receiptId) {
+    return new Promise(function(resolve) {
+      const callback = 'etLeadReceipt_' + receiptId;
+      const script = document.createElement('script');
+      let finished = false;
+      function finish(saved) {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        delete window[callback];
+        script.remove();
+        resolve(saved);
+      }
+      const timer = setTimeout(function(){ finish(false); }, 8000);
+      window[callback] = function(saved){ finish(saved === true); };
+      script.onerror = function(){ finish(false); };
+      script.src = endpoint + '?receipt=' + encodeURIComponent(receiptId);
+      document.head.appendChild(script);
+    });
+  }
 
   (function(){
     const form=document.getElementById('consultation-form');
@@ -163,12 +195,20 @@
         status.textContent='Please enter your name, valid Indian mobile number and tattoo requirement.';return;
       }
       button.disabled=true;status.textContent='Sending your request…';
-      const payload={name:form.elements.name.value.trim(),phone:phone,tattooType:form.elements.tattooType.value,message:form.elements.message.value.trim()};
+      const receiptId = Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2,'0')).join('');
+      const payload={receiptId:receiptId,name:form.elements.name.value.trim(),phone:phone,tattooType:form.elements.tattooType.value,message:form.elements.message.value.trim()};
       try{
         await fetch(endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
-        status.textContent='Request sent from your browser. Please note: delivery cannot be confirmed here. If you do not hear back, call +91 77788 33638.';
-        form.reset();
-        if(typeof window.gtag==='function')window.gtag('event','lead_form_submit_attempt',{event_category:'engagement'});
+        if(typeof window.gtag==='function')window.gtag('event','lead_form_submit_attempt',{send_to:'G-EZQGD5BJB2',event_category:'engagement'});
+        if (await checkLeadReceipt(endpoint, receiptId)) {
+          trackAdsConversion('lead');
+          if(typeof window.gtag==='function')window.gtag('event','generate_lead',{send_to:'G-EZQGD5BJB2'});
+          status.textContent='Thank you! Your consultation request has been received.';
+          form.reset();
+        } else {
+          status.textContent='Request sent, but receipt could not be confirmed. Please call +91 77788 33638 if you do not hear back.';
+          form.reset();
+        }
       }catch(err){
         status.textContent='Could not send the request. Please call +91 77788 33638 instead.';
       }finally{button.disabled=false;}
