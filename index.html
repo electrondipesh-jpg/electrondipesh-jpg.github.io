@@ -13,7 +13,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b0b0b">
-  <meta name="description" content="Electron Tattoos in Gandhidham, Gujarat. Custom permanent tattoos, cover-ups, rework, touch-ups and tattoo removal. Book a personal consultation.">
+  <meta name="description" content="Electron Tattoos in Gandhidham, Gujarat. Custom tattoos, cover-ups, tattoo removal, body piercing and tattoo training. Book a personal consultation.">
   <title>Electron Tattoos | Custom Tattoo Studio in Gandhidham</title>
   <style>
     :root{--bg:#090909;--panel:#141414;--gold:#d6ad62;--gold2:#f1d69b;--white:#f7f4ee;--muted:#aaa39a;--line:#302a20}
@@ -32,7 +32,7 @@
     .actions{display:flex;flex-wrap:wrap;gap:12px}.trust{display:flex;gap:25px;flex-wrap:wrap;margin-top:48px;color:#c8bda9;font-size:12px;letter-spacing:1px;text-transform:uppercase}
     .trust b{color:var(--gold2);font-size:15px}
     section{padding:85px 0}.section-head{max-width:650px;margin-bottom:38px}.section-head h2{font:500 clamp(34px,5vw,52px)/1.1 Georgia,serif;margin:12px 0}.section-head p{color:var(--muted)}
-    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.service{padding:27px;background:linear-gradient(145deg,#191714,#101010);border:1px solid var(--line);min-height:180px}
+    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.services.secondary-services{grid-template-columns:repeat(2,1fr);margin-top:14px}.service[id]{scroll-margin-top:90px}.service .service-link{display:inline-block;margin-top:14px;color:var(--gold);font-size:13px;text-decoration:underline}.service{padding:27px;background:linear-gradient(145deg,#191714,#101010);border:1px solid var(--line);min-height:180px}
     .service .num{color:var(--gold);font:italic 22px Georgia}.service h3{font:500 24px Georgia;margin:14px 0 8px}.service p{color:var(--muted);font-size:14px;margin:0}
     .gallery{background:#111}.gallery-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.gallery-tile{margin:0;position:relative;overflow:hidden;border:1px solid #403625;background:#171411;aspect-ratio:3/4}.gallery-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}.gallery-tile:hover img{transform:scale(1.04)}.gallery-tile figcaption{position:absolute;bottom:0;left:0;right:0;padding:35px 12px 15px;background:linear-gradient(transparent,rgba(0,0,0,.9));font:italic 18px Georgia,serif;color:#f5e9d6}@media(max-width:850px){.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:440px){.gallery-grid{gap:9px}.gallery-tile figcaption{font-size:14px;padding:26px 9px 10px}}
     .about-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:75px;align-items:center}.about-art{min-height:310px;background:transparent;border:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 25px}
@@ -43,7 +43,7 @@
     .contact-card{border:1px solid var(--line);padding:27px;background:#0d0d0d}.detail{padding:13px 0;border-bottom:1px solid #28231c}.detail:last-child{border:0}.detail small{display:block;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:10px}.detail strong{font-size:15px}
     footer{padding:25px 0;border-top:1px solid #29231a;color:#8f887e;font-size:12px}.foot{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
     .sticky{display:none}
-    @media(max-width:760px){.navlinks{display:none}.nav{height:66px}.hero{min-height:570px}.hero-inner{padding:70px 0}.services{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr 1fr}.gallery-tile{min-height:170px}.about-grid,.contact-grid{grid-template-columns:1fr;gap:25px}.about-art{min-height:240px;padding:10px}.about-art img{width:min(75%,230px);max-height:260px}section{padding:65px 0}.sticky{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:10;background:#090909;padding:9px;gap:8px;border-top:1px solid var(--line)}.sticky a{flex:1;padding:12px 8px;font-size:10px}.sticky-space{height:60px}}
+    @media(max-width:760px){.navlinks{display:none}.nav{height:66px}.hero{min-height:570px}.hero-inner{padding:70px 0}.services,.services.secondary-services{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr 1fr}.gallery-tile{min-height:170px}.about-grid,.contact-grid{grid-template-columns:1fr;gap:25px}.about-art{min-height:240px;padding:10px}.about-art img{width:min(75%,230px);max-height:260px}section{padding:65px 0}.sticky{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:10;background:#090909;padding:9px;gap:8px;border-top:1px solid var(--line)}.sticky a{flex:1;padding:12px 8px;font-size:10px}.sticky-space{height:60px}}
     @media(max-width:390px){.gallery-grid{grid-template-columns:1fr}.trust{gap:12px}}
 
     .lead-form{display:grid;gap:12px;margin-top:22px}.lead-form label{display:grid;gap:5px;font-size:12px;color:#e6d6bd}.lead-form input,.lead-form select,.lead-form textarea{width:100%;border:1px solid #54452f;background:#181613;color:#fff;padding:12px;font:inherit;border-radius:2px}.lead-form textarea{min-height:85px;resize:vertical}.lead-form .btn{cursor:pointer}.lead-form .btn:disabled{opacity:.6;cursor:wait}.form-note{font-size:12px;color:#b9afa1}.form-status{font-size:13px;min-height:22px;color:#f1d69b}.hp-field{position:absolute;left:-9999px;opacity:0}
@@ -73,11 +73,15 @@
 
   <section id="services">
     <div class="wrap">
-      <div class="section-head"><div class="eyebrow">What we do</div><h2>Made personal.<br>Made to last.</h2><p>Every tattoo begins with a conversation about your idea, placement and style. Book a consultation to discuss your design.</p></div>
+      <div class="section-head"><div class="eyebrow">What we do</div><h2>Made personal.<br>Made to last.</h2><p>Explore our tattoo, removal, piercing and training services. Book a consultation to discuss your requirements.</p></div>
       <div class="services">
         <article class="service"><div class="num">01</div><h3>Custom Tattoos</h3><p>Personalised permanent tattoo concepts, from meaningful names and symbols to detailed artwork.</p></article>
         <article class="service"><div class="num">02</div><h3>Cover-ups & Rework</h3><p>Refresh an older tattoo with a considered cover-up, redesign or touch-up.</p></article>
-        <article class="service"><div class="num">03</div><h3>Tattoo Removal</h3><p>Discuss your existing tattoo and available removal options during a personal consultation.</p></article>
+        <article class="service" id="tattoo-removal"><div class="num">03</div><h3>Tattoo Removal</h3><p>Discuss your existing tattoo and available removal options during a personal consultation.</p><a class="service-link" href="#contact">Enquire about removal</a></article>
+      </div>
+      <div class="services secondary-services">
+        <article class="service" id="piercing"><div class="num">04</div><h3>Body Piercing</h3><p>Discuss your preferred piercing, placement, pricing and aftercare guidance with our Gandhidham studio.</p><a class="service-link" href="#contact">Enquire about piercing</a></article>
+        <article class="service" id="academy"><div class="num">05</div><h3>Tattoo Training &amp; Academy</h3><p>Interested in learning tattoo artistry? Contact Electron Tattoo &amp; Academy to discuss training options, course details and fees.</p><a class="service-link" href="#contact">Enquire about training</a></article>
       </div>
     </div>
   </section>
@@ -111,7 +115,7 @@
           <h3 style="font:500 27px Georgia,serif;margin:4px 0">Request a consultation</h3>
           <label>Your name <input name="name" autocomplete="name" maxlength="100" required placeholder="Full name"></label>
           <label>Mobile number <input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="16" required placeholder="10-digit mobile number"></label>
-          <label>Tattoo requirement <select name="tattooType" required><option value="">Select a service</option><option>New custom tattoo</option><option>Name / lettering tattoo</option><option>Cover-up / rework</option><option>Touch-up</option><option>Tattoo removal consultation</option><option>Other</option></select></label>
+          <label>Service requirement <select name="tattooType" required><option value="">Select a service</option><option>New custom tattoo</option><option>Name / lettering tattoo</option><option>Cover-up / rework</option><option>Touch-up</option><option>Tattoo removal consultation</option><option>Body piercing consultation</option><option>Tattoo training enquiry</option><option>Other</option></select></label>
           <label>Tell us briefly <textarea name="message" maxlength="1000" placeholder="Style, placement, preferred appointment day (optional)"></textarea></label>
           <div class="hp-field" aria-hidden="true"><label>Leave blank <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <button class="btn gold" type="submit" id="lead-submit">Send consultation request</button>
