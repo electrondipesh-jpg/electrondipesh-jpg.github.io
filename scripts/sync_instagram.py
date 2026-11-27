@@ -1,0 +1,54 @@
+"""Fetch public Instagram media on a trusted CI runner, without leaking credentials."""
+import json, os, urllib.parse, urllib.request, urllib.error
+from pathlib import Path
+from datetime import datetime, timezone
+
+ACCOUNT = "17841406004858008"
+USERNAME = "electrontattoos"
+TOKEN = os.environ.get("INSTAGRAM_ACCESS_TOKEN", "")
+BASE = "https://graph.facebook.com/v27.0/"
+if not TOKEN:
+    raise SystemExit("Instagram secret is not configured.")
+
+def get(path, **params):
+    url = BASE + path + "?" + urllib.parse.urlencode(params)
+    request = urllib.request.Request(url, headers={"Authorization": "Bearer " + TOKEN})
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return json.load(response)
+    except (urllib.error.URLError, ValueError):
+        raise SystemExit("Instagram request failed; verify token scope and account access.") from None
+
+def safe_url(value, instagram=False):
+    if not isinstance(value,str):
+        return None
+    url = urllib.parse.urlsplit(value)
+    host = url.hostname or ""
+    if url.scheme != "https" or not host or url.username or url.password:
+        return None
+    if instagram and not (host == "instagram.com" or host.endswith(".instagram.com")):
+        return None
+    return value
+
+profile = get(ACCOUNT, fields="id,username")
+if profile.get("username", "").lower() != USERNAME:
+    raise SystemExit("Instagram account mismatch; refusing to publish.")
+media = get(ACCOUNT + "/media", fields="id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,children{media_type,media_url,thumbnail_url}", limit=12)
+posts = []
+for item in media.get("data", []):
+    kind = item.get("media_type")
+    image = item.get("thumbnail_url") if kind == "VIDEO" else item.get("media_url")
+    if not image and kind == "CAROUSEL_ALBUM":
+        children = item.get("children", {}).get("data", [])
+        if children:
+            first = children[0]
+            image = first.get("thumbnail_url") if first.get("media_type") == "VIDEO" else first.get("media_url")
+    image = safe_url(image)
+    link = safe_url(item.get("permalink"), True)
+    if image and link:
+        posts.append({"id": str(item.get("id", "")), "caption": str(item.get("caption", "")), "type": kind, "image":image, "permalink":link, "timestamp":item.get("timestamp")})
+if not posts:
+    raise SystemExit("No displayable Instagram media; preserving current site.")
+out = Path("instagram-feed.json")
+out.write_text(json.dumps({"username":USERNAME,"updated":datetime.now(timezone.utc).isoformat(),"posts":posts},ensure_ascii=False),encoding="utf-8")
+print(f"Validated {len(posts)} public Instagram posts.")
